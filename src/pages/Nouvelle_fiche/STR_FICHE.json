@@ -1,0 +1,32 @@
+{
+    "_comment" :"This is the hotel guest registration form. Please also create an API for this.",
+
+    
+    "nom": "Tshisekedi",
+    "prenom": "Patrick",
+    "sexe": "Homme",
+    "dateNaissance": "1990-06-15",
+    "lieuNaissance": "Kinshasa",
+    "nationalite": "Congolaise",
+    "qualification": "Cadres, professions intellectuelles supérieures",
+    "typeIdentite": "Passport",
+    "numIdentite": "CD12345678",
+    "dateEntreeCongo": "2024-04-01",
+    "numeroEntree": "123456",
+    "dateDelivrance": "2023-01-01",
+    "email": "patrick@example.com",
+    "telephone": "+243810000000",
+    "motifVoyage": "Loisirs et/ou récréation",
+    "organisationVoyage": "Sans reservation",
+    "dateArriveeCongo": "2024-04-10",
+    "dateDepart": "2024-04-15",
+    "nbMineurs": "2",
+    "lieuProvenance": "Casablanca",
+    "destination": "Lubumbashi",
+    "adresseDomiciliaire": "Av. des Huileries, Gombe",
+    "ville": "Kinshasa",
+    "pays": "RDC",
+    "chambre": "102",
+    "indemnite": "50000"
+  }
+  

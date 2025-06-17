@@ -1,0 +1,564 @@
+
+  /* Popup qui prend 90% de l’écran */
+  .popup-large {
+    margin-top: 30px;
+    width: 100%;
+    height: 90%;
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow-y: auto;
+  }
+  
+  /* Bouton de fermeture */
+  .close-button {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+  }
+
+  .popup-title {
+    text-align: center;
+    color: #00a7d0;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  
+  .popup-main {
+    display: flex;
+    gap: 20px;
+    border: 2px dashed #b9b6b6;
+    padding: 10px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+  
+  .popup-left, .popup-right {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .popup-card {
+    background-color: #6c63ff;
+    border-radius: 10px;
+    padding: 25px;
+    color: #f1f1f1;
+    font-size: 13px;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 15px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+  }
+  
+  .popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .titre_modal{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .popup-name {
+    font-weight: bold;
+  }
+  
+  .popup-room {
+    color: #f1f1f1;
+  }
+  
+  .popup-status {
+    background-color: #2ecc71;
+    color: white;
+    padding: 10px 10px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+  }
+  
+  .popup-meta {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    background-color: #f3f4f6;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+  }
+  
+  .etat-tag {
+    display: inline-block;
+    background-color: #00bfff;
+    color: white;
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin-top: 5px;
+    
+  }
+  .popup-right{
+    background: white;
+    border-radius: 16px;
+    color: #59595f;
+    font-size: 13px;
+    font-family: 'Poppins', sans-serif;
+    padding: 32px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow-y: auto;
+  }
+  .popup-section {
+    margin-bottom: 20px;
+  }
+  
+  .popup-section h3 {
+    color: #555;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+  }
+  
+  .lang-circle {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    color: white;
+  }
+  
+  .lang-circle.fr {
+    background-color: #3b82f6;
+  }
+  
+  .lang-circle.eng {
+    background-color: #facc15;
+    color: #333;
+  }
+  .text_box{
+    margin-top: 25px;
+    border-radius: 8px;
+    padding: 15px;
+    color: #666;
+    font-size: 13px;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: #fff; 
+  }
+  .popup-footer {
+    margin-top: 25px;
+    border-radius: 8px;
+    padding: 15px;
+  }
+  
+  .popup-footer ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .popup-footer li {
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+  }
+  /* Applique à tout ce qui déborde */
+.scrollable-content {
+	overflow-y: auto;
+	max-height: 80vh; /* ou selon ton besoin */
+  }
+  
+  /* Style du scroll */
+  .scrollable-content::-webkit-scrollbar {
+	width: 8px;
+  }
+  
+  /* Fond de la scrollbar */
+  .scrollable-content::-webkit-scrollbar-track {
+	background: #f0f0f0;
+	border-radius: 10px;
+  }
+  
+  /* Curseur de la scrollbar */
+  .scrollable-content::-webkit-scrollbar-thumb {
+	background-color: #00a7d0;
+	border-radius: 10px;
+	border: 2px solid #f0f0f0;
+  }
+  
+  /* Hover sur le curseur */
+  .scrollable-content::-webkit-scrollbar-thumb:hover {
+	background-color: #007e9a;
+  }
+  
+  .search-box2 {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 45px;
+    max-width: 480px;
+    margin-bottom: 10px;
+    background: #fff;
+    padding-left: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+}
+
+.search-box2:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.search-box2 i {
+    font-size: 20px;
+    color: #555;
+    margin-right: 10px;
+}
+
+.search-box2 input {
+    flex: 1;
+    border: none;
+    outline: none;
+    margin-top: 8px;
+    font-size: 12px;
+    border-radius: 50px;
+}
+
+.search-box2 button {
+    background: #6c63ff;
+    width: 100px;
+    color: white;
+    border: none;
+    text-align: center;
+    font-size: 12px;
+    padding: 15px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.search-box2 button:hover {
+    background: #005bb5;
+}
+
+.scan-full-image-block {
+    width: 70%;
+    height: 200px; /* ou ajustable selon besoin */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    background-color: #fff;
+  }
+  
+  .scan-full-image-block img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* ou contain si tu veux tout voir */
+    display: block;
+  }
+  .image-modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .image-modal-content {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  }
+  
+  .image-modal-content img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  @media (max-width: 1024px) {
+  .popup-main {
+    flex-direction: column;
+  }
+
+  .popup-left,
+  .popup-right {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .scan-full-image-block {
+    width: 100%;
+    height: auto;
+  }
+
+  .search-box2 {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+  }
+
+  .search-box2 input {
+    width: 100%;
+    margin-top: 5px;
+  }
+
+  .search-box2 button {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .popup-large {
+    height: auto;
+    margin: 20px 10px;
+    padding: 16px;
+  }
+
+  .close-button {
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+  }
+
+  .popup-title {
+    font-size: 1.2rem;
+  }
+
+  .popup-section h3 {
+    font-size: 0.95rem;
+  }
+}
+
+  
+  
+.client-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+  margin-top: 24px;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+
+.client-table thead th {
+  background-color: #f5f7fa;
+  color: #555;
+  padding: 10px 12px;
+  border: none;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: left;
+}
+
+.client-table tbody tr {
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.client-table tbody tr:hover {
+  background-color: #f0f4f8;
+}
+
+.client-table td {
+  padding: 10px 12px;
+  border: none;
+  vertical-align: middle;
+}
+
+.client-table td:last-child {
+  text-align: center;
+}
+
+.client-table button.popup-status {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.client-table button.popup-status:hover {
+  background-color: #0056b3;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(8px); /* effet de flou */
+  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  text-align: center;
+}
+
+.popup-content input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.error-message {
+  color: red;
+  margin-top: 5px;
+}
+
+.btn-validate {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+}
+.close-btn:hover{
+  background: none;
+}
+
+
+
+.popup-contente.details-popup {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+.popup-contente.details-popup::-webkit-scrollbar {
+  width: 5px;
+}
+
+.popup-contente.details-popup::-webkit-scrollbar-track {
+  background: #a8cae7;
+  border-radius: 10px;
+}
+
+.popup-contente.details-popup::-webkit-scrollbar-thumb {
+  background: #efeeee;
+  border-radius: 10px;
+}
+
+.popup-contente.details-popup::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.popup-title {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.details-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.details-card {
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  flex: 1 1 280px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.details-card:hover {
+  transform: translateY(-3px);
+}
+
+.details-card h3 {
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 5px;
+  margin-bottom: 12px;
+  color: #444;
+  font-size: 1.1rem;
+}
+
+.details-card p {
+  margin: 8px 0;
+  color: #555;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  line-height: 35px;
+  transition: background 0.3s;
+}
+
+
+.close-btn:hover {
+  background: none;
+}
+
+.details-section h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+}

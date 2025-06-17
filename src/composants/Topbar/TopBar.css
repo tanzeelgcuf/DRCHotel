@@ -1,0 +1,79 @@
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  padding: 7px 20px;
+  background: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-left .title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #3EB489;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.topbar-right .admin-name {
+  font-weight: 500;
+}
+
+.topbar-right .avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.toggle-btn {
+  display: block;
+  position: ab;
+  top: 10px;
+  left: 10px;
+  font-size: 24px;
+  z-index: 1001;
+  background-color: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: black; /* exemple de couleur */
+}
+
+@media (max-width: 768px) {
+  .toggle-btn {
+    display: block;
+  }
+}
+
+
+@media (max-width: 768px) {
+  #content {
+    margin-left: 0;
+  }
+  #sidebar.active ~ #content {
+    margin-left: 240px;
+  }
+}
+.power{
+    border: 1px solid #e0e0e0;
+    padding: 5px;
+    border-radius: 50%;
+  }
+
+  .power i{
+    background: tomato;
+    padding: 5px;
+    cursor: pointer;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 14px;
+  }

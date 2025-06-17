@@ -1,0 +1,116 @@
+.fullscreen-background {
+    background-image: url('/img.jpg'); /* Commence par un slash car le dossier public = racine */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  
+.login-popup{
+    top: 0;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1); /* transparent white */
+    backdrop-filter: blur(10px); /* LE FLÉAU DU FOND */
+    -webkit-backdrop-filter: blur(10px);
+    display: grid;
+}
+.login-popup-contenair{
+    place-self: center;
+    width: max(23vw, 400px);
+    color: #808080;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    animation: fadeIn 0.5s;
+}
+.login-popup-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+}
+.login-popup-titl{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.login-popup-titl p i{
+    background-color: #6c63ff;
+    padding: 5px;
+    border-radius: 50%;
+    color: #fff;
+    margin-top: 8px;
+    font-size: 18px;
+}
+.login-popup-titl p span{
+    font-size: 15px;
+}
+.login-popup-inputs{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.login-popup-inputs input{
+    border: 1px solid #ddd;
+    font-weight: 600;
+    padding: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 4px; 
+}
+.login-popup-contenair button{
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    color: white;
+    background-color: #6c63ff;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.5s;
+}
+.securite{
+    color: #6c63ff;
+}
+.login-popup-contenair button:hover{
+    background:  #fff4f2;
+    color: #444;
+    border: 1px solid #6c63ff;
+}
+.login-popup-condition{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: -15px;
+}
+.login-popup-condition input{
+    margin-top: 5px;
+}
+p span{
+    cursor: pointer;
+    color: #6c63ff;
+    font-weight: 500;
+}
+.img_logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.img_logo img{
+    width: 140px;
+}
+
+.flex_input{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 5px;
+}
