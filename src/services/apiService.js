@@ -1,7 +1,8 @@
+// src/services/apiService.js
 import logger from '../utils/logger';
 import { parseApiError } from '../utils/errorHandler';
 import errorMonitoring from '../utils/errorMonitoring';
-import { REQUEST_TIMEOUTS } from '../constants/apiConfig';
+import { REQUEST_TIMEOUTS, apiConfig } from '../config/api';
 
 /**
  * Maximum number of retry attempts for failed requests
@@ -25,7 +26,7 @@ const createHeaders = (additionalHeaders = {}) => {
     ...additionalHeaders,
   };
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('authToken') || localStorage.getItem('token');
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
     console.log('Added Authorization header with token');
@@ -43,7 +44,6 @@ const createHeaders = (additionalHeaders = {}) => {
  * @returns {boolean} - Whether the error is CORS-related
  */
 const isCorsError = (error) => {
-  // For network errors, check the message
   if (error instanceof TypeError) {
     const corsTerms = [
       'access-control-allow-origin',
@@ -66,7 +66,6 @@ const isCorsError = (error) => {
  * @param {string} url - Request URL
  */
 const handleCorsError = (error, method, url) => {
-  // Create a detailed log entry with diagnostic information
   logger.error(`CORS ERROR in ${method} request to ${url}`, {
     error: error.message,
     origin: window.location.origin,
@@ -90,7 +89,6 @@ const handleCorsError = (error, method, url) => {
     }
   });
   
-  // Register this CORS error with our error monitoring system
   errorMonitoring.captureError(error, 'api_cors');
 };
 
@@ -112,22 +110,39 @@ const getRetryDelay = (attempt) => {
  * @returns {boolean} - Whether to retry the request
  */
 const shouldRetry = (error) => {
-  // Don't retry CORS errors - they will keep failing
   if (isCorsError(error)) {
     return false;
   }
   
-  // Retry network errors
   if (error instanceof TypeError && error.message.includes('network')) {
     return true;
   }
   
-  // Retry server errors (5xx)
   if (error instanceof Response) {
     return error.status >= 500 && error.status < 600;
   }
   
   return false;
+};
+
+/**
+ * Build full URL with base URL
+ * @param {string} endpoint - The endpoint path
+ * @returns {string} - Full URL
+ */
+const buildFullUrl = (endpoint) => {
+  // If endpoint already includes the base URL, return as is
+  if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
+    return endpoint;
+  }
+  
+  // If endpoint starts with /, use it directly with base URL
+  if (endpoint.startsWith('/')) {
+    return `${apiConfig.BASE_URL}${endpoint}`;
+  }
+  
+  // Otherwise, add /api/v1 prefix
+  return `${apiConfig.BASE_URL}/api/v1/${endpoint}`;
 };
 
 /**
@@ -150,46 +165,44 @@ const apiService = {
       timeout = REQUEST_TIMEOUTS.DEFAULT 
     } = options;
     
+    // Build full URL
+    const fullUrl = buildFullUrl(url);
+    
     const headers = createHeaders(customHeaders);
     const config = {
       method,
       headers,
-      mode: 'cors', // Explicit CORS mode
+      mode: 'cors',
       ...options,
     };
     
-    // Remove credentials and other conflicting options if they exist in options
-    delete config.body; // We'll set this separately below
-    delete config.credentials; // Make sure credentials option is not duplicated
+    delete config.body;
+    delete config.credentials;
     
     if (body && typeof body === 'object') {
-      // Log the request body for debugging
-      console.log(`Request ${method} to ${url}:`, body);
+      console.log(`Request ${method} to ${fullUrl}:`, body);
       
       config.body = JSON.stringify(body);
       
-      // Remove Content-Type header for FormData
       if (body instanceof FormData) {
         delete config.headers['Content-Type'];
       }
     }
     
-    // Create AbortController for request timeout
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
     config.signal = controller.signal;
     
     try {
-      // Log the request with full details
-      logger.logApiRequest(method, url, body);
+      logger.logApiRequest(method, fullUrl, body);
       
-      console.log(`Sending ${method} request to ${url} with config:`, {
+      console.log(`Sending ${method} request to ${fullUrl} with config:`, {
         method: config.method,
         headers: config.headers,
         body: config.body ? (typeof config.body === 'string' ? JSON.parse(config.body) : config.body) : undefined
       });
       
-      const response = await fetch(url, config);
+      const response = await fetch(fullUrl, config);
       let data;
       const contentType = response.headers.get('content-type');
       
@@ -209,8 +222,7 @@ const apiService = {
         data = { error: 'Failed to parse response data', originalError: parseError.message };
       }
       
-      // Log the response
-      logger.logApiResponse(method, url, response.status, data);
+      logger.logApiResponse(method, fullUrl, response.status, data);
       
       if (!response.ok) {
         console.error(`API Error (${response.status}):`, data);
@@ -228,9 +240,8 @@ const apiService = {
       
       return { success: true, data };
     } catch (error) {
-      // Check if this is a timeout
       if (error.name === 'AbortError') {
-        logger.error(`API request timeout after ${timeout}ms: ${method} ${url}`);
+        logger.error(`API request timeout after ${timeout}ms: ${method} ${fullUrl}`);
         return { 
           success: false, 
           error: `La requête a expiré après ${timeout / 1000} secondes. Veuillez réessayer.`,
@@ -238,9 +249,8 @@ const apiService = {
         };
       }
       
-      // Check if this is a CORS error
       if (isCorsError(error)) {
-        handleCorsError(error, method, url);
+        handleCorsError(error, method, fullUrl);
         return { 
           success: false, 
           error: 'Erreur de connexion au serveur (CORS). Le serveur a été configuré.',
@@ -249,13 +259,11 @@ const apiService = {
         };
       }
       
-      // Log the general error
-      logger.error(`API Error: ${method} ${url}`, error);
+      logger.error(`API Error: ${method} ${fullUrl}`, error);
       
-      // Implement retry logic for specific errors
       if (!skipRetry && attempt < MAX_RETRY_ATTEMPTS && shouldRetry(error)) {
         const delay = getRetryDelay(attempt);
-        logger.warn(`Retrying API call (${attempt + 1}/${MAX_RETRY_ATTEMPTS}) to ${url} after ${delay}ms`);
+        logger.warn(`Retrying API call (${attempt + 1}/${MAX_RETRY_ATTEMPTS}) to ${fullUrl} after ${delay}ms`);
         
         return new Promise(resolve => {
           setTimeout(() => {
@@ -264,7 +272,6 @@ const apiService = {
         });
       }
       
-      // Format the error for consistent handling
       const errorMessage = await parseApiError(error);
       return { 
         success: false, 
@@ -272,7 +279,6 @@ const apiService = {
         status: error.status 
       };
     } finally {
-      // Clear the timeout
       clearTimeout(timeoutId);
     }
   },
@@ -342,8 +348,7 @@ const apiService = {
       ...options,
       method: 'POST',
       body: formData,
-      timeout: REQUEST_TIMEOUTS.UPLOAD, // Extended timeout for uploads
-      // Don't automatically set Content-Type for FormData
+      timeout: REQUEST_TIMEOUTS.UPLOAD,
     });
   },
   
@@ -354,21 +359,19 @@ const apiService = {
    */
   async testCorsConfig(url) {
     try {
-      logger.info(`Running CORS test for ${url}`);
+      const fullUrl = buildFullUrl(url);
+      logger.info(`Running CORS test for ${fullUrl}`);
       
-      // First test - simple GET with minimal headers
-      const basicResult = await fetch(url, {
+      const basicResult = await fetch(fullUrl, {
         method: 'GET',
         mode: 'cors',
         credentials: 'omit',
         headers: { 'Accept': 'application/json' }
       });
       
-      // Second test - OPTIONS preflight
-      const preflightResult = await fetch(url, {
+      const preflightResult = await fetch(fullUrl, {
         method: 'OPTIONS',
         mode: 'cors',
-        // No credentials for CORS compatibility with wildcard origin
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -404,7 +407,7 @@ const apiService = {
       };
     } catch (error) {
       if (isCorsError(error)) {
-        handleCorsError(error, 'CORS-TEST', url);
+        handleCorsError(error, 'CORS-TEST', buildFullUrl(url));
         return {
           success: false,
           isCors: true,

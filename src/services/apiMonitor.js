@@ -1,6 +1,6 @@
 import apiService from './apiService';
 import logger from '../utils/logger';
-import { API_ENDPOINTS } from '../constants/apiConfig';
+import { apiConfig } from '../config/api';
 
 /**
  * Service to monitor API health and connectivity
@@ -14,7 +14,6 @@ class ApiMonitor {
       error: null
     };
     
-    // Automatically check API connectivity when network status changes
     if (typeof window !== 'undefined') {
       window.addEventListener('online', () => this.checkHealth());
       window.addEventListener('offline', () => {
@@ -40,22 +39,22 @@ class ApiMonitor {
     try {
       logger.info('Checking API health');
       
-      // Check a simple endpoint like health check or a basic endpoint
-      // You may need to create a dedicated health check endpoint
-      const healthEndpoint = `${API_ENDPOINTS.BASE_URL}/health` || API_ENDPOINTS.AUTH.LOGIN;
+      // Use the health endpoint from your backend
+      const healthEndpoint = apiConfig.ENDPOINTS.HEALTH;
       
       const response = await apiService.get(healthEndpoint, { 
-        skipRetry: true,  // Skip retries for health checks
-        timeout: 5000     // Short timeout for health checks
+        skipRetry: true,
+        timeout: 5000
       });
       
       if (response.success) {
         this.healthStatus = {
           isOnline: true,
           lastCheck: new Date(),
-          error: null
+          error: null,
+          serverInfo: response.data
         };
-        logger.info('API health check successful');
+        logger.info('API health check successful', response.data);
       } else {
         this.healthStatus = {
           isOnline: false,
@@ -116,6 +115,64 @@ class ApiMonitor {
   stopPeriodicChecks(intervalId) {
     if (intervalId) {
       clearInterval(intervalId);
+    }
+  }
+  
+  /**
+   * Test API connectivity and log detailed information
+   * @returns {Promise<Object>} Test results
+   */
+  async testConnectivity() {
+    logger.info('Starting comprehensive API connectivity test');
+    
+    const testResults = {
+      timestamp: new Date().toISOString(),
+      apiUrl: apiConfig.BASE_URL,
+      environment: import.meta.env.VITE_ENV,
+      tests: {}
+    };
+    
+    try {
+      // Test 1: Health endpoint
+      logger.info('Testing health endpoint...');
+      const healthResult = await this.checkHealth();
+      testResults.tests.health = {
+        success: healthResult.isOnline,
+        response: healthResult.serverInfo,
+        error: healthResult.error
+      };
+      
+      // Test 2: CORS configuration
+      logger.info('Testing CORS configuration...');
+      const corsResult = await apiService.testCorsConfig(apiConfig.ENDPOINTS.HEALTH);
+      testResults.tests.cors = corsResult;
+      
+      // Test 3: Authentication endpoints (without credentials)
+      logger.info('Testing authentication endpoint availability...');
+      try {
+        const authTest = await fetch(`${apiConfig.BASE_URL}${apiConfig.ENDPOINTS.AUTH.LOGIN}`, {
+          method: 'OPTIONS',
+          mode: 'cors'
+        });
+        testResults.tests.authentication = {
+          success: authTest.ok,
+          status: authTest.status,
+          headers: Object.fromEntries([...authTest.headers.entries()])
+        };
+      } catch (authError) {
+        testResults.tests.authentication = {
+          success: false,
+          error: authError.message
+        };
+      }
+      
+      logger.info('API connectivity test completed', testResults);
+      return testResults;
+      
+    } catch (error) {
+      logger.error('API connectivity test failed', error);
+      testResults.error = error.message;
+      return testResults;
     }
   }
 }
